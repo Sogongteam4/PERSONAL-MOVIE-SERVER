@@ -20,7 +20,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String social_id;
+    private String socialId;
 
     private String profileImgUri;
 
@@ -32,4 +32,9 @@ public class User {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
     private Type type;
+
+    public void updateUserInfo(String nickname, String profileImageUrl) {
+        this.nickname = nickname;
+        this.profileImgUri = profileImageUrl;
+    }
 }
