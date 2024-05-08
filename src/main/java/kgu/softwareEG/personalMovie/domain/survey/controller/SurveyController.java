@@ -1,18 +1,18 @@
 package kgu.softwareEG.personalMovie.domain.survey.controller;
 
+import kgu.softwareEG.personalMovie.domain.survey.dto.request.SubmitChoiceRequestDto;
 import kgu.softwareEG.personalMovie.domain.survey.dto.response.GetQuestionAndChoicesResponseDto;
+import kgu.softwareEG.personalMovie.domain.survey.dto.response.SubmitChoiceResponseDto;
 import kgu.softwareEG.personalMovie.domain.survey.service.SurveyService;
+import kgu.softwareEG.personalMovie.global.auth.UserId;
 import kgu.softwareEG.personalMovie.global.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/survey")
+@RequestMapping("/api/surveys")
 public class SurveyController {
 
     private final SurveyService surveyService;
@@ -21,5 +21,11 @@ public class SurveyController {
     public ResponseEntity<SuccessResponse<?>> getQuestionAndChoices(@PathVariable Long surveyId) {
         GetQuestionAndChoicesResponseDto getQuestionAndChoicesResponseDto = surveyService.getQuestionAndChoices(surveyId);
         return SuccessResponse.ok(getQuestionAndChoicesResponseDto);
+    }
+
+    @PostMapping("/choices")
+    public ResponseEntity<SuccessResponse<?>> submitChoice(@UserId Long userId, @RequestBody SubmitChoiceRequestDto submitChoiceRequestDto) {
+        SubmitChoiceResponseDto submitChoiceResponseDto = surveyService.submitChoice(userId, submitChoiceRequestDto);
+        return SuccessResponse.created(submitChoiceResponseDto);
     }
 }
