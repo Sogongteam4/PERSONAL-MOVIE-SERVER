@@ -24,7 +24,7 @@ public class Genre {
     private String name;
 
     @OneToMany(mappedBy = "genre", fetch = LAZY)
-    List<MovieGenre> movieGenres = new ArrayList<>();
+    private List<MovieGenre> movieGenres = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
