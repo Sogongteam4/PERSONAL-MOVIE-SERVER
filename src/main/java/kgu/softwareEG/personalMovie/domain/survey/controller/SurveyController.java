@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/survey")
+@RequestMapping("/api/surveys")
 public class SurveyController {
 
     private final SurveyService surveyService;
