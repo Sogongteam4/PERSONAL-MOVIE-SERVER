@@ -32,5 +32,5 @@ public class Choice {
     private Type type;
 
     @OneToMany(mappedBy = "choice", fetch = LAZY)
-    List<UserChoice> userChoices = new ArrayList<>();
+    private List<UserChoice> userChoices = new ArrayList<>();
 }

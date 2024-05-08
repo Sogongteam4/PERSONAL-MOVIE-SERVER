@@ -23,6 +23,6 @@ public class Question {
     private String content;
 
     @OneToMany(mappedBy = "question", fetch = LAZY)
-    List<Choice> choices = new ArrayList<>();
+    private List<Choice> choices = new ArrayList<>();
 
 }
