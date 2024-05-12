@@ -27,7 +27,7 @@ public class Choice {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
     private Type type;
 
