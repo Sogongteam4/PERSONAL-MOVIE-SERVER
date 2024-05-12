@@ -14,18 +14,15 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/movie")
+@RequestMapping("/api/movies")
 public class MovieController {
     private final MovieRepository movieRepository;
     private final MovieService movieService;
 
-    @GetMapping("/movies")
+    @GetMapping
     public ResponseEntity retrieveMovies(@PageableDefault(size = 100) Pageable pageable) {
         return movieService.retrieveMovies(pageable);
     }
-
-
-
 
 
 
