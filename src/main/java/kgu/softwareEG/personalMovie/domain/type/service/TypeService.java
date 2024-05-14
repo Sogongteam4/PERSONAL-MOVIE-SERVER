@@ -2,6 +2,8 @@ package kgu.softwareEG.personalMovie.domain.type.service;
 
 import kgu.softwareEG.personalMovie.domain.movie.repository.MovieRepository;
 import kgu.softwareEG.personalMovie.domain.survey.entity.Choice;
+import kgu.softwareEG.personalMovie.domain.survey.repository.ChoiceRepository;
+import kgu.softwareEG.personalMovie.domain.type.dto.request.GetUserTypeRequestDto;
 import kgu.softwareEG.personalMovie.domain.type.dto.response.GetUserTypeResponseDto;
 import kgu.softwareEG.personalMovie.domain.type.entity.Type;
 import kgu.softwareEG.personalMovie.domain.type.repository.TypeRepository;
@@ -18,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static kgu.softwareEG.personalMovie.global.error.ErrorCode.INTERNAL_SERVER_ERROR;
-import static kgu.softwareEG.personalMovie.global.error.ErrorCode.MEMBER_NOT_FOUND;
+import static kgu.softwareEG.personalMovie.global.error.ErrorCode.*;
 import static kgu.softwareEG.personalMovie.global.util.YoutubeUtil.searchWord;
 
 @Service
@@ -31,14 +33,12 @@ public class TypeService {
 
     private final UserRepository userRepository;
     private final TypeRepository typeRepository;
-    private final YoutubeUtil youtubeUtil;
-    private final MovieRepository movieRepository;
+    private final ChoiceRepository choiceRepository;
 
-    public GetUserTypeResponseDto getUserType(Long userId) {
+    public GetUserTypeResponseDto getUserType(Long userId, GetUserTypeRequestDto getUserTypeRequestDto) {
         User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(MEMBER_NOT_FOUND));
-        List<Choice> choices = user.getUserChoices().stream().map(userChoice -> userChoice.getChoice()).collect(Collectors.toList());
-
-        if (choices.size() != 4) throw new InvalidValueException();
+        List<Choice> choices = getUserTypeRequestDto.choices().stream().map(choiceId ->
+                choiceRepository.findById(choiceId).orElseThrow(() -> new EntityNotFoundException(CHOICE_NOT_FOUND))).collect(Collectors.toList());
 
         Map<Long, Long> typeFrequency = choices.stream().map(choice -> choice.getType())
                 .collect(Collectors.groupingBy(type -> type.getId(), Collectors.counting()));
@@ -49,6 +49,9 @@ public class TypeService {
         long resultType = findMyType(typeFrequency, repeatedTypeCount);
 
         Type type = typeRepository.findById(resultType).orElseThrow(() -> new InternalServerException(INTERNAL_SERVER_ERROR));
+        user.addType(type);
+        user.updateIsSurveyed();
+
         return GetUserTypeResponseDto.of(type);
     }
 

@@ -37,4 +37,14 @@ public class User {
         this.nickname = nickname;
         this.profileImgUri = profileImageUrl;
     }
+
+    public void addType(Type type) {
+        this.type = type;
+    }
+
+    public void updateIsSurveyed() {
+        if (!isSurveyed) {
+            this.isSurveyed = true;
+        }
+    }
 }
