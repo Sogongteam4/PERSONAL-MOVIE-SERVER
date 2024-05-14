@@ -59,20 +59,15 @@ public class MovieService {
         return GetMovieInfoResponseDto.of(movie);
     }
 
-    /*public HashMap<MovieGenre, Integer> getPickedGenres(RecommendationDto recommendationDto) {
-        HashMap<MovieGenre, Integer> pickedGenres = new HashMap<>();
-        recommendationDto.getPickedGenres().forEach(
-                movieData -> {
-                    Movie movie = movieRepository.findById(movieData.getMovieId()).orElseThrow(
-                            () -> new IllegalStateException("Cannot find movies with given id: " + movieData.getMovieId().toString()));
+    public List<Movie> findByYear(int year) {
+        return movieRepository.findByYear(year);
+    }
 
-                    Set<MovieGenre> genreList = movie.getGenres();
-                    for(MovieGenre movieGenre : genreList) {
-                        Integer count = pickedGenres.getOrDefault(genreList, 0);
-                        pickedGenres.put(genreList, count);
-                    }
-                }
-        );
-        return pickedGenres;
-    }*/
+    public List<Movie> findByGenre(List<MovieGenre> genre) {
+        return movieRepository.findByMovieGenres(genre);
+    }
+
+    public List<Movie> findByYearAndGenre(Integer year, List<MovieGenre> genre) {
+        return movieRepository.findByYearAndMovieGenres(year, genre);
+    }
 }
