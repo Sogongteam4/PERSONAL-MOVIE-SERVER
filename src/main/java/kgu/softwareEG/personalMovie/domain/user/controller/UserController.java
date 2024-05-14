@@ -22,7 +22,7 @@ public class UserController {
         return SuccessResponse.ok("로그인 성공하였습니다.");
     }
 
-    @GetMapping("/status")
+    @GetMapping("/surveys/status")
     public ResponseEntity<SuccessResponse<?>> getIsSurveyed(@UserId Long userId) {
         GetIsSurveyedResponseDto getIsSurveyedResponseDto = userService.getIsSurveyed(userId);
         return SuccessResponse.ok(getIsSurveyedResponseDto);

@@ -2,7 +2,6 @@ package kgu.softwareEG.personalMovie.domain.user.service;
 
 import kgu.softwareEG.personalMovie.domain.user.dto.GetIsSurveyedResponseDto;
 import kgu.softwareEG.personalMovie.domain.user.entity.User;
-import kgu.softwareEG.personalMovie.domain.user.repository.UserChoiceRepository;
 import kgu.softwareEG.personalMovie.domain.user.repository.UserRepository;
 import kgu.softwareEG.personalMovie.global.auth.userInfo.OAuth2UserInfo;
 import kgu.softwareEG.personalMovie.global.error.ErrorCode;
