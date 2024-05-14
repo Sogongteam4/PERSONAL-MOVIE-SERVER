@@ -18,22 +18,18 @@ public class OAuthPrincipalDetails implements OAuth2User {
         this.user = user;
     }
 
-    public OAuthPrincipalDetails(User user,Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
-    @Override
-    public String getName() {
-        return user.getNickname();
-    }
 
     public String getSocialId() {
         return user.getSocialId();
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }
