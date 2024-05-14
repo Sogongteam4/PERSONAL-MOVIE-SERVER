@@ -40,8 +40,6 @@ public class TypeService {
         List<Choice> choices = getUserTypeRequestDto.choices().stream().map(choiceId ->
                 choiceRepository.findById(choiceId).orElseThrow(() -> new EntityNotFoundException(CHOICE_NOT_FOUND))).collect(Collectors.toList());
 
-        if (choices.size() != 4) throw new InvalidValueException();
-
         Map<Long, Long> typeFrequency = choices.stream().map(choice -> choice.getType())
                 .collect(Collectors.groupingBy(type -> type.getId(), Collectors.counting()));
 
