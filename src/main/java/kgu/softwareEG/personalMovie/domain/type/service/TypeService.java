@@ -52,6 +52,7 @@ public class TypeService {
 
         Type type = typeRepository.findById(resultType).orElseThrow(() -> new InternalServerException(INTERNAL_SERVER_ERROR));
         user.addType(type);
+        user.updateIsSurveyed();
 
         return GetUserTypeResponseDto.of(type);
     }
