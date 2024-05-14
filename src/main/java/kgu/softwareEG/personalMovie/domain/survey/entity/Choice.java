@@ -2,7 +2,6 @@ package kgu.softwareEG.personalMovie.domain.survey.entity;
 
 import jakarta.persistence.*;
 import kgu.softwareEG.personalMovie.domain.type.entity.Type;
-import kgu.softwareEG.personalMovie.domain.user.entity.UserChoice;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -31,6 +30,4 @@ public class Choice {
     @JoinColumn(name = "type_id")
     private Type type;
 
-    @OneToMany(mappedBy = "choice", fetch = LAZY)
-    private List<UserChoice> userChoices = new ArrayList<>();
 }
