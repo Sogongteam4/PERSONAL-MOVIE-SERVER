@@ -1,7 +1,6 @@
 package kgu.softwareEG.personalMovie.domain.survey.entity;
 
 import jakarta.persistence.*;
-import kgu.softwareEG.personalMovie.domain.user.entity.UserChoice;
 import lombok.*;
 
 import java.util.ArrayList;

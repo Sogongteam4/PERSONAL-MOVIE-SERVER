@@ -1,10 +1,7 @@
 package kgu.softwareEG.personalMovie.domain.survey.controller;
 
-import kgu.softwareEG.personalMovie.domain.survey.dto.request.SubmitChoiceRequestDto;
 import kgu.softwareEG.personalMovie.domain.survey.dto.response.GetQuestionAndChoicesResponseDto;
-import kgu.softwareEG.personalMovie.domain.survey.dto.response.SubmitChoiceResponseDto;
 import kgu.softwareEG.personalMovie.domain.survey.service.SurveyService;
-import kgu.softwareEG.personalMovie.global.auth.UserId;
 import kgu.softwareEG.personalMovie.global.common.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +20,4 @@ public class SurveyController {
         return SuccessResponse.ok(getQuestionAndChoicesResponseDto);
     }
 
-    @PostMapping("/choices")
-    public ResponseEntity<SuccessResponse<?>> submitChoice(@UserId Long userId, @RequestBody SubmitChoiceRequestDto submitChoiceRequestDto) {
-        SubmitChoiceResponseDto submitChoiceResponseDto = surveyService.submitChoice(userId, submitChoiceRequestDto);
-        return SuccessResponse.created(submitChoiceResponseDto);
-    }
 }

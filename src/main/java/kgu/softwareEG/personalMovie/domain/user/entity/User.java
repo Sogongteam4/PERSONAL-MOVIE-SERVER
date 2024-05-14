@@ -26,8 +26,6 @@ public class User {
 
     private String nickname;
 
-    @OneToMany(mappedBy = "user", fetch = LAZY)
-    private List<UserChoice> userChoices = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
