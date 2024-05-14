@@ -26,6 +26,8 @@ public class User {
 
     private String nickname;
 
+    private boolean isSurveyed;
+
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
