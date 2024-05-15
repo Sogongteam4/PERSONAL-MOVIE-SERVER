@@ -1,13 +1,18 @@
 package kgu.softwareEG.personalMovie.domain.user.service;
 
+import kgu.softwareEG.personalMovie.domain.user.dto.GetIsSurveyedResponseDto;
 import kgu.softwareEG.personalMovie.domain.user.entity.User;
 import kgu.softwareEG.personalMovie.domain.user.repository.UserRepository;
 import kgu.softwareEG.personalMovie.global.auth.userInfo.OAuth2UserInfo;
+import kgu.softwareEG.personalMovie.global.error.ErrorCode;
+import kgu.softwareEG.personalMovie.global.error.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -39,5 +44,12 @@ public class UserService {
                 .build();
 
         return userRepository.save(createdUser);
+    }
+
+    public GetIsSurveyedResponseDto getIsSurveyed(Long userId) {
+
+        User user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.MEMBER_NOT_FOUND));
+
+        return GetIsSurveyedResponseDto.of(user.isSurveyed());
     }
 }
