@@ -1,10 +1,11 @@
 package kgu.softwareEG.personalMovie.domain.type.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import kgu.softwareEG.personalMovie.domain.movie.entity.Movie;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -20,5 +21,8 @@ public class Type {
     private String name;
 
     private String imgUri;
+
+    @OneToMany(mappedBy = "type", fetch = FetchType.LAZY)
+    private List<Movie> movies = new ArrayList<>();
 
 }

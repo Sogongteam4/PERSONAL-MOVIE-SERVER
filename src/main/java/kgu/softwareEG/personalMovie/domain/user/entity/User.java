@@ -22,19 +22,20 @@ public class User {
 
     private String socialId;
 
-    private String profileImgUri;
+    private boolean isSurveyed;
 
-    private String nickname;
-
-    @OneToMany(mappedBy = "user", fetch = LAZY)
-    private List<UserChoice> userChoices = new ArrayList<>();
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
     private Type type;
 
-    public void updateUserInfo(String nickname, String profileImageUrl) {
-        this.nickname = nickname;
-        this.profileImgUri = profileImageUrl;
+    public void addType(Type type) {
+        this.type = type;
+    }
+
+    public void updateIsSurveyed() {
+        if (!isSurveyed) {
+            this.isSurveyed = true;
+        }
     }
 }

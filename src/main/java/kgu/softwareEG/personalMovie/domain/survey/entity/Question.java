@@ -1,7 +1,6 @@
 package kgu.softwareEG.personalMovie.domain.survey.entity;
 
 import jakarta.persistence.*;
-import kgu.softwareEG.personalMovie.domain.user.entity.UserChoice;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -23,6 +22,6 @@ public class Question {
     private String content;
 
     @OneToMany(mappedBy = "question", fetch = LAZY)
-    List<Choice> choices = new ArrayList<>();
+    private List<Choice> choices = new ArrayList<>();
 
 }
