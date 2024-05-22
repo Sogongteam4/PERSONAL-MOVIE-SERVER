@@ -1,10 +1,8 @@
 package kgu.softwareEG.personalMovie.global.config;
 
 import kgu.softwareEG.personalMovie.domain.user.repository.UserRepository;
-import kgu.softwareEG.personalMovie.global.auth.OAuthPrincipalService;
 import kgu.softwareEG.personalMovie.global.auth.handelr.CustomAccessDeniedHandler;
 import kgu.softwareEG.personalMovie.global.auth.handelr.CustomAuthenticationEntryPoint;
-import kgu.softwareEG.personalMovie.global.auth.handelr.OAuthAuthenticationSuccessHandler;
 import kgu.softwareEG.personalMovie.global.auth.jwt.ExceptionHandlerFilter;
 import kgu.softwareEG.personalMovie.global.auth.jwt.JwtAuthenticationFilter;
 import kgu.softwareEG.personalMovie.global.util.JwtUtil;
@@ -26,8 +24,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final CorsConfig corsConfig;
     private final JwtUtil jwtUtil;
-    private final OAuthPrincipalService oAuthPrincipalService;
-    private final OAuthAuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final ExceptionHandlerFilter exceptionHandlerFilter;
     private final UserRepository userRepository;
     private final CustomAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -47,20 +43,13 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagementConfigurer ->
                         sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        /**
-         * OAuth 로그인 설정
-         */
-        http
-                .oauth2Login(LoginConfigurer -> LoginConfigurer
-                        .userInfoEndpoint(endpointConfig -> endpointConfig.userService(oAuthPrincipalService))
-                        .successHandler(oAuth2AuthenticationSuccessHandler));
 
         /**
          * 접근 허용 uri 추가
          */
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/api/user/test").permitAll()
+                        .requestMatchers("/api/users/test","/api/users").permitAll()
                         .anyRequest().authenticated());
 
         /**

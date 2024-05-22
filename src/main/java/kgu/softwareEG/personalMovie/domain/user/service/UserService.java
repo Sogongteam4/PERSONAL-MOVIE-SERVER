@@ -1,5 +1,10 @@
 package kgu.softwareEG.personalMovie.domain.user.service;
 
+
+import kgu.softwareEG.personalMovie.domain.user.dto.request.LoginRequestDto;
+import kgu.softwareEG.personalMovie.domain.user.dto.response.LoginResponseDto;
+import kgu.softwareEG.personalMovie.global.util.JwtUtil;
+import java.util.Optional;
 import kgu.softwareEG.personalMovie.domain.user.dto.GetIsSurveyedResponseDto;
 import kgu.softwareEG.personalMovie.domain.user.entity.User;
 import kgu.softwareEG.personalMovie.domain.user.repository.UserRepository;
@@ -16,34 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    /**
-     * 유저정보를 받아 User 객체를 반환한다.
-     * 만약 회원가입되어 있지 않다면 회원가입 한다.
-     * 이미 가입되어 있다면 닉네임과 프로필이미지를 업데이트한다.
-     * @param userInfo 로그인을 요청하는 유저의 정보
-     * @return
-     */
-    public User getOrCreateUser(OAuth2UserInfo userInfo) {
-        String email = userInfo.getEmail();
-        String nickname = userInfo.getNickname();
-        String profileImgUrl = userInfo.getProfileImgUrl();
+    private final JwtUtil jwtUtil;
 
-        return userRepository.findBySocialId(email)
-                .map(user -> {
-                    user.updateUserInfo(nickname, profileImgUrl);
-                    return user;
-                })
-                .orElseGet(() -> createUser(email,nickname,profileImgUrl));
-    }
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+        String socialId = loginRequestDto.kakaoToken();
+        Optional<User> user = userRepository.findBySocialId(socialId);
 
-    private User createUser(String email, String nickname, String profileImgUrl) {
-        User createdUser = User.builder()
-                .socialId(email)
-                .nickname(nickname)
-                .profileImgUri(profileImgUrl)
-                .build();
+        if (!user.isPresent()) {
+            User newUser = User.builder().socialId(socialId).build();
+            userRepository.save(newUser);
+        }
 
-        return userRepository.save(createdUser);
+        String accessToken = jwtUtil.createAccessToken(socialId);
+
+        return LoginResponseDto.of(accessToken);
     }
 
     public GetIsSurveyedResponseDto getIsSurveyed(Long userId) {

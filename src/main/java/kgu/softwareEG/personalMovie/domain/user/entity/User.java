@@ -22,21 +22,12 @@ public class User {
 
     private String socialId;
 
-    private String profileImgUri;
-
-    private String nickname;
-
     private boolean isSurveyed;
 
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "type_id")
     private Type type;
-
-    public void updateUserInfo(String nickname, String profileImageUrl) {
-        this.nickname = nickname;
-        this.profileImgUri = profileImageUrl;
-    }
 
     public void addType(Type type) {
         this.type = type;

@@ -25,14 +25,14 @@ public class JwtUtil {
 
 
     /**
-     * @param socialId 토큰에 담아줄 정보
+     * @param kakaoToken 토큰에 담아줄 정보
      * @return 액세스토큰
      */
-    public String createAccessToken(String socialId) {
+    public String createAccessToken(String kakaoToken) {
         return PREFIX + JWT.create()
                 .withSubject("AccessToken")
                 .withExpiresAt(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRE_TIME))
-                .withClaim("socialId", socialId)
+                .withClaim("kakaoToken", kakaoToken)
                 .sign(Algorithm.HMAC512(SECRET));
     }
 
@@ -54,6 +54,6 @@ public class JwtUtil {
     public String extractSocialId(String token) {
         return JWT.require(Algorithm.HMAC512(SECRET)).build()
                 .verify(token)
-                .getClaim("socialId").asString();
+                .getClaim("kakaoToken").asString();
     }
 }
