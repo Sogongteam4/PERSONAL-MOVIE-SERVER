@@ -1,13 +1,10 @@
 package kgu.softwareEG.personalMovie.domain.movie.service;
 
 import kgu.softwareEG.personalMovie.domain.genre.repository.GenreRepository;
-import kgu.softwareEG.personalMovie.domain.movie.dto.RecommendationDto;
 import kgu.softwareEG.personalMovie.domain.movie.dto.response.GetMovieInfoResponseDto;
 import kgu.softwareEG.personalMovie.domain.movie.entity.Movie;
 import kgu.softwareEG.personalMovie.domain.movie.entity.MovieGenre;
-import kgu.softwareEG.personalMovie.domain.movie.repository.MovieGenreRepository;
 import kgu.softwareEG.personalMovie.domain.movie.repository.MovieRepository;
-import kgu.softwareEG.personalMovie.global.error.ErrorCode;
 import kgu.softwareEG.personalMovie.global.error.exception.EntityNotFoundException;
 import kgu.softwareEG.personalMovie.global.util.YoutubeUtil;
 import lombok.RequiredArgsConstructor;
@@ -59,20 +56,15 @@ public class MovieService {
         return GetMovieInfoResponseDto.of(movie);
     }
 
-    /*public HashMap<MovieGenre, Integer> getPickedGenres(RecommendationDto recommendationDto) {
-        HashMap<MovieGenre, Integer> pickedGenres = new HashMap<>();
-        recommendationDto.getPickedGenres().forEach(
-                movieData -> {
-                    Movie movie = movieRepository.findById(movieData.getMovieId()).orElseThrow(
-                            () -> new IllegalStateException("Cannot find movies with given id: " + movieData.getMovieId().toString()));
+    public List<Movie> findByYear(int year) {
+        return movieRepository.findByYear(year);
+    }
 
-                    Set<MovieGenre> genreList = movie.getGenres();
-                    for(MovieGenre movieGenre : genreList) {
-                        Integer count = pickedGenres.getOrDefault(genreList, 0);
-                        pickedGenres.put(genreList, count);
-                    }
-                }
-        );
-        return pickedGenres;
-    }*/
+    public List<Movie> findByGenre(List<MovieGenre> genre) {
+        return movieRepository.findByMovieGenres(genre);
+    }
+
+    public List<Movie> findByYearAndGenre(Integer year, List<MovieGenre> genre) {
+        return movieRepository.findByYearAndMovieGenres(year, genre);
+    }
 }

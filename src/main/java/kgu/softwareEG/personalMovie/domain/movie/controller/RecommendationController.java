@@ -1,12 +1,11 @@
 package kgu.softwareEG.personalMovie.domain.movie.controller;
 
+import kgu.softwareEG.personalMovie.domain.movie.dto.response.GetMovieInfoResponseDto;
 import kgu.softwareEG.personalMovie.domain.movie.entity.Movie;
+import kgu.softwareEG.personalMovie.domain.movie.repository.MovieRepository;
 import kgu.softwareEG.personalMovie.domain.movie.service.RecommendationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,14 +15,32 @@ public class RecommendationController {
 
     @Autowired
     private RecommendationService recommendationService;
+    @Autowired
+    private MovieRepository movieRepository;
 
-    @GetMapping("/{userId}")
-    public List<Movie> recommendMovies(@PathVariable Long userId) {
-        return recommendationService.recommendMovies(userId);
+    @GetMapping("/type")
+    public List<GetMovieInfoResponseDto> recommendByType(@RequestParam String type) {
+        if ("8".equals(type)) {
+            return recommendByRating();
+        }
+        else {
+            List<Movie> movies = movieRepository.findByType_NameOrderByRateDesc(type);
+            return recommendationService.recommendByType(type);
+        }
     }
 
-    @GetMapping("/{userId}/type/{typeId}")
-    public List<Movie> recommendMoviesByType(@PathVariable Long userId, @PathVariable Long typeId) {
-        return recommendationService.recommendMoviesByType(userId, typeId);
+    @GetMapping("/genre")
+    public List<GetMovieInfoResponseDto> recommendByGenre(@RequestParam String genre) {
+        return recommendationService.recommendByGenre(genre);
+    }
+
+    @GetMapping("/year")
+    public List<GetMovieInfoResponseDto> recommendByYear(@RequestParam int year) {
+        return recommendationService.recommendByYear(year);
+    }
+
+    @GetMapping("/rating")
+    public List<GetMovieInfoResponseDto> recommendByRating() {
+        return recommendationService.recommendByRating();
     }
 }
