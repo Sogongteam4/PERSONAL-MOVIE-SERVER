@@ -49,7 +49,7 @@ public class SecurityConfig {
          */
         http
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/api/users/test","/api/users").permitAll()
+                        .requestMatchers("/api/users/test","/api/users","/swagger-ui/**","/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());
 
         /**
